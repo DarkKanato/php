@@ -24,4 +24,19 @@ $pdo->exec("CREATE TABLE IF NOT EXISTS tasks (
     created_at TEXT DEFAULT CURRENT_TIMESTAMP
 )");
 
+$pdo->exec("CREATE TABLE IF NOT EXISTS habits (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER NOT NULL,
+    title TEXT NOT NULL,
+    created_at TEXT DEFAULT CURRENT_TIMESTAMP
+)");
+
+// one row per habit per day
+$pdo->exec("CREATE TABLE IF NOT EXISTS habit_logs (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    habit_id INTEGER NOT NULL,
+    log_date TEXT NOT NULL,
+    UNIQUE (habit_id, log_date)
+)");
+
 session_start();

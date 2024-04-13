@@ -10,6 +10,7 @@
     <a href="index.php">Home</a>
     <?php if (isset($_SESSION['user_id'])): ?>
         <a href="tasks.php">Tasks</a>
+        <a href="habits.php">Habits</a>
         <a href="logout.php">Logout (<?php echo htmlspecialchars($_SESSION['username']); ?>)</a>
     <?php else: ?>
         <a href="login.php">Login</a>
