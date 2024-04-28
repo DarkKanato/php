@@ -10,3 +10,6 @@ th, td { text-align: left; padding: 6px; border-bottom: 1px solid #ddd; }
 .bar { background: #ddd; height: 14px; border-radius: 7px; margin-bottom: 15px; }
 .bar-fill { background: #4caf50; height: 14px; border-radius: 7px; }
 li { margin-bottom: 6px; }
+.flash { padding: 8px 12px; border-radius: 4px; }
+.flash-success { background: #dff0d8; color: #3c763d; }
+.flash-info { background: #d9edf7; color: #31708f; }

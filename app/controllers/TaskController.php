@@ -14,6 +14,7 @@ class TaskController extends Controller
         $title = trim($_POST['title'] ?? '');
         if ($this->isPost() && $title !== '') {
             Task::create($uid, $title);
+            $this->flash('Task added');
         }
         $this->redirect('task/index');
     }
@@ -22,6 +23,7 @@ class TaskController extends Controller
     {
         $uid = $this->requireLogin();
         Task::markDone($uid, (int)($_GET['id'] ?? 0));
+        $this->flash('Nice, task completed!');
         $this->redirect('task/index');
     }
 
@@ -29,6 +31,7 @@ class TaskController extends Controller
     {
         $uid = $this->requireLogin();
         Task::delete($uid, (int)($_GET['id'] ?? 0));
+        $this->flash('Task deleted', 'info');
         $this->redirect('task/index');
     }
 }

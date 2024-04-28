@@ -32,6 +32,14 @@ abstract class Controller
         return (int)$_SESSION['user_id'];
     }
 
+    /**
+     * One-time message, shown in the layout after redirect.
+     */
+    protected function flash(string $message, string $type = 'success'): void
+    {
+        $_SESSION['flash'] = ['message' => $message, 'type' => $type];
+    }
+
     protected function isPost(): bool
     {
         return $_SERVER['REQUEST_METHOD'] === 'POST';

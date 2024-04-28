@@ -18,6 +18,10 @@
     <?php endif; ?>
 </div>
 <div class="content">
+    <?php if (!empty($_SESSION['flash'])): ?>
+        <p class="flash flash-<?= $_SESSION['flash']['type'] ?>"><?= htmlspecialchars($_SESSION['flash']['message']) ?></p>
+        <?php unset($_SESSION['flash']); ?>
+    <?php endif; ?>
     <?= $content ?>
 </div>
 </body>
