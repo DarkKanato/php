@@ -23,3 +23,8 @@ php -S localhost:8000 -t public
 ```
 
 и открыть http://localhost:8000
+
+## Update (May 2024): переезжаю на Yii2
+
+Решил, что пора учить настоящий фреймворк. Самописный MVC перенесён в `legacy/mvc-prototype`,
+новое приложение будет на Yii2 Basic. План: миграции, ActiveRecord-модели, авторизация, аналитика.
