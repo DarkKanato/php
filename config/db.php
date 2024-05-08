@@ -1,14 +1,11 @@
 <?php
 
+// SQLite: the db file lives in runtime/ and is created by `php yii migrate`
 return [
     'class' => \yii\db\Connection::class,
-    'dsn' => 'mysql:host=localhost;dbname=yii2basic',
-    'username' => 'root',
-    'password' => '',
-    'charset' => 'utf8',
-
-    // Schema cache options (for production environment)
-    //'enableSchemaCache' => true,
-    //'schemaCacheDuration' => 60,
-    //'schemaCache' => 'cache',
+    'dsn' => 'sqlite:' . dirname(__DIR__) . '/runtime/tracker.sqlite',
+    // sqlite ignores foreign keys unless this pragma is enabled for every connection
+    'on afterOpen' => function ($event) {
+        $event->sender->createCommand('PRAGMA foreign_keys = ON')->execute();
+    },
 ];
