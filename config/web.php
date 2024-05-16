@@ -3,28 +3,27 @@
 $params = require __DIR__ . '/params.php';
 $db = require __DIR__ . '/db.php';
 
+// Secret for cookie validation. Instead of keeping it in git the key is generated
+// once on the first request and stored in runtime/ (which is git-ignored).
+$cookieKeyFile = dirname(__DIR__) . '/runtime/cookie.key';
+if (!is_file($cookieKeyFile)) {
+    file_put_contents($cookieKeyFile, bin2hex(random_bytes(32)));
+}
+
 $config = [
-    'id' => 'basic',
+    'id' => 'habit-tracker',
+    'name' => 'Task & Habit Tracker',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
-    'container' => [
-        'singletons' => [
-            \yii\mail\MailerInterface::class => [
-                'class' => \yii\symfonymailer\Mailer::class,
-                // send all mails to a file by default.
-                'useFileTransport' => true,
-                'viewPath' => '@app/mail',
-            ],
-        ],
-    ],
+    'defaultRoute' => 'site/index',
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
         '@npm'   => '@vendor/npm-asset',
     ],
     'components' => [
         'request' => [
-            // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
-            'cookieValidationKey' => '',
+            'cookieValidationKey' => trim(file_get_contents($cookieKeyFile)),
+            'enableCsrfValidation' => true,
         ],
         'cache' => [
             'class' => \yii\caching\FileCache::class,
@@ -32,11 +31,11 @@ $config = [
         'user' => [
             'identityClass' => \app\models\User::class,
             'enableAutoLogin' => true,
+            'loginUrl' => ['site/login'],
         ],
         'errorHandler' => [
             'errorAction' => 'site/error',
         ],
-        'mailer' => \yii\mail\MailerInterface::class,
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
             'targets' => [
@@ -47,32 +46,27 @@ $config = [
             ],
         ],
         'db' => $db,
-        /*
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
             ],
         ],
-        */
     ],
     'params' => $params,
 ];
 
-if (YII_ENV_DEV) {
-    // configuration adjustments for 'dev' environment
+// debug toolbar and gii are require-dev packages, so they may be missing
+if (YII_ENV_DEV && class_exists(\yii\debug\Module::class)) {
     $config['bootstrap'][] = 'debug';
     $config['modules']['debug'] = [
         'class' => \yii\debug\Module::class,
-        // uncomment the following to add your IP if you are not connecting from localhost.
-        //'allowedIPs' => ['127.0.0.1', '::1'],
     ];
-
+}
+if (YII_ENV_DEV && class_exists(\yii\gii\Module::class)) {
     $config['bootstrap'][] = 'gii';
     $config['modules']['gii'] = [
         'class' => \yii\gii\Module::class,
-        // uncomment the following to add your IP if you are not connecting from localhost.
-        //'allowedIPs' => ['127.0.0.1', '::1'],
     ];
 }
 

@@ -12,8 +12,7 @@
     "require": {
         "php": ">=8.2",
         "yiisoft/yii2": "~2.0.54",
-        "yiisoft/yii2-bootstrap5": "~2.0.2",
-        "yiisoft/yii2-symfonymailer": "~2.0.3"
+        "yiisoft/yii2-bootstrap5": "~2.0.2"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.1.0",
@@ -45,11 +44,6 @@
                     "web/assets": "0777",
                     "yii": "0755"
                 }
-            ]
-        },
-        "yii\\composer\\Installer::postInstall": {
-            "generateCookieValidationKey": [
-                "config/web.php"
             ]
         }
     }
