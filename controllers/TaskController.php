@@ -104,9 +104,13 @@ class TaskController extends Controller
         return $this->redirect(['index']);
     }
 
+    /**
+     * Finds a task of the *current user*. Somebody else's task (or a habit) gives the same 404
+     * as a missing one, so ids can't be guessed (it was possible to edit/delete any task by id before).
+     */
     protected function findModel(int $id): Task
     {
-        $model = Task::findOne($id);
+        $model = Task::findOwned($id, (int)Yii::$app->user->id, Task::TYPE_TASK);
         if ($model === null) {
             throw new NotFoundHttpException('Task not found.');
         }

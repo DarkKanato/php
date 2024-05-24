@@ -110,6 +110,14 @@ class Task extends ActiveRecord
         return $this->type === self::TYPE_HABIT;
     }
 
+    /**
+     * Returns the record only if it belongs to the given user and has the given type.
+     */
+    public static function findOwned(int $id, int $userId, int $type): ?self
+    {
+        return static::findOne(['id' => $id, 'user_id' => $userId, 'type' => $type]);
+    }
+
     // ---- relations ----
 
     public function getUser(): ActiveQuery
