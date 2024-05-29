@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace app\models;
 
+use app\services\StatsService;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
@@ -138,20 +139,12 @@ class Task extends ActiveRecord
     }
 
     /**
-     * Number of days in a row (up to today) when the habit was checked in.
+     * Number of days in a row when the habit was checked in.
      */
     public function getStreak(): int
     {
-        $dates = array_flip(
-            $this->getHabitLogs()->select('log_date')->column()
-        );
+        $dates = array_flip($this->getHabitLogs()->select('log_date')->column());
 
-        $streak = 0;
-        $day = new \DateTimeImmutable('today');
-        while (isset($dates[$day->format('Y-m-d')])) {
-            $streak++;
-            $day = $day->modify('-1 day');
-        }
-        return $streak;
+        return StatsService::calculateStreak($dates);
     }
 }

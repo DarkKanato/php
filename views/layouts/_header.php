@@ -35,8 +35,9 @@ if (Yii::$app->user->isGuest) {
     <?= Nav::widget([
         'options' => ['class' => 'navbar-nav me-auto'],
         'items' => [
-            ['label' => 'Home', 'url' => ['/site/index']],
+            ['label' => 'Dashboard', 'url' => ['/site/index'], 'visible' => !Yii::$app->user->isGuest],
             ['label' => 'Tasks', 'url' => ['/task/index'], 'visible' => !Yii::$app->user->isGuest],
+            ['label' => 'Habits', 'url' => ['/habit/index'], 'visible' => !Yii::$app->user->isGuest],
         ],
     ]) ?>
     <?= Nav::widget([

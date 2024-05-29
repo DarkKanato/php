@@ -6,6 +6,7 @@ namespace app\controllers;
 
 use app\models\LoginForm;
 use app\models\User;
+use app\services\StatsService;
 use Yii;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
@@ -54,10 +55,19 @@ class SiteController extends Controller
 
     public function actionIndex(): string|Response
     {
-        if (!Yii::$app->user->isGuest) {
-            return $this->redirect(['/task/index']);
+        if (Yii::$app->user->isGuest) {
+            return $this->render('index');
         }
-        return $this->render('index');
+
+        $stats = new StatsService((int)Yii::$app->user->id);
+        $habits = $stats->habitSummary();
+
+        return $this->render('dashboard', [
+            'tasks' => $stats->taskSummary(),
+            'habits' => $habits,
+            'bestStreak' => $habits ? max(array_column($habits, 'streak')) : 0,
+            'habitsToday' => count(array_filter(array_column($habits, 'today'))),
+        ]);
     }
 
     public function actionSignup(): string|Response
